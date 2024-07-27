@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { listenToUserData } from '../firebaseFunctions'; // Import the function to listen for data
+import './Dashboard.css'; // Adjust the path as needed
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -17,17 +18,33 @@ const Dashboard = () => {
     };
   }, []);
 
+  const totalUsers = userData ? Object.keys(userData).length : 0;
+
   return (
     <div>
       <h1>User Data</h1>
       {userData ? (
-        <ol>
-          {Object.keys(userData).map((userId) => (
-            <li key={userId}>
-              UserID: {userId}, Profit per Hour: {userData[userId].autoIncrement * 3600}
-            </li>
-          ))}
-        </ol>
+        <>
+          <p>Total Users: {totalUsers}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>UserID</th>
+                <th>Profit per Hour</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(userData).map((userId, index) => (
+                <tr key={userId}>
+                  <td>{index + 1}</td>
+                  <td>{userId}</td>
+                  <td>{userData[userId].autoIncrement * 3600}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       ) : (
         <p>Loading...</p>
       )}
