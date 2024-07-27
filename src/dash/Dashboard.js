@@ -30,31 +30,33 @@ const Dashboard = () => {
     : [];
 
   return (
-    <div>
+    <div className="dashboard-layout">
       <h1>User Data</h1>
       {userData ? (
         <>
-          <p>Total Users: {totalUsers}</p>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>UserID</th>
-                <th>Profit per Hour</th>
-                <th>Invite Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedUserData.map((userId, index) => (
-                <tr key={userId}>
-                  <td>{index + 1}</td>
-                  <td>{userId}</td>
-                  <td>{userData[userId].autoIncrement * 3600}</td>
-                  <td>{userData[userId].inviteCount || 0}</td>
+          <p className="total-users">Total Users: {totalUsers}</p>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>UserID</th>
+                  <th>Profit per Hour</th>
+                  <th>Invite Count</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sortedUserData.map((userId, index) => (
+                  <tr key={userId}>
+                    <td data-label="#">{index + 1}</td>
+                    <td data-label="UserID">{userId}</td>
+                    <td data-label="Profit per Hour">{userData[userId].autoIncrement * 3600}</td>
+                    <td data-label="Invite Count">{userData[userId].inviteCount || 0}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       ) : (
         <p>Loading...</p>
