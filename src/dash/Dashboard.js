@@ -22,10 +22,16 @@ const Dashboard = () => {
 
   // Calculate total profit per hour and divide by 18000
   const totalProfitPerHour = userData
-    ? Object.keys(userData).reduce((total, userId) => {
-        return total + userData[userId].autoIncrement * 3600;
-      }, 0) / 18000
-    : 0;
+  ? Math.floor(
+      Object.keys(userData)
+        .filter(userId => (userData[userId].inviteCount || 0) >= 3)
+        .reduce((total, userId) => {
+          return total + userData[userId].autoIncrement * 3600;
+        }, 0) / 18000
+    )
+  : 0;
+
+
 
   // Sort user data by profit per hour in descending order
   const sortedUserData = userData
@@ -60,7 +66,7 @@ const Dashboard = () => {
                   <tr key={userId}>
                     <td data-label="#">{index + 1}</td>
                     <td data-label="UserID">{userId}</td>
-                    <td data-label="Profit per Hour">{userData[userId].autoIncrement * 3600}</td>
+                    <td data-label="Profit per Hour">{Math.floor(userData[userId].autoIncrement * 3600)}</td>
                     <td data-label="Invite Count">{userData[userId].inviteCount || 0}</td>
                   </tr>
                 ))}
