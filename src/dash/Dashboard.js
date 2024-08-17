@@ -93,11 +93,13 @@ import './Dashboard.css'; // Adjust the path as needed
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [totalTokens, setTotalTokens] = useState(0); // State to store tokens
+  const [airdrop, setAirdrop] = useState(0); // State to store airdrop value
 
   useEffect(() => {
     const unsubscribe = listenToUserData((data) => {
       setUserData(data); // Update state with the received data
       calculateTotalTokens(data); // Calculate total tokens when data is received
+      calculateAirdrop(data); // Calculate airdrop based on condition
     });
 
     // Cleanup function to unsubscribe if the component unmounts
@@ -115,6 +117,41 @@ const Dashboard = () => {
     setTotalTokens(tokens);
   };
 
+  const calculateAirdrop = (data) => {
+    const passingUsers = Object.keys(data).filter((userId) => {
+      const userUpgrades = data[userId].upgrades || {};
+      const upgradeLevels = [
+        userUpgrades.autoClicker01 || 0,
+        userUpgrades.autoClicker02 || 0,
+        userUpgrades.autoClicker03 || 0,
+        userUpgrades.autoClicker04 || 0,
+        userUpgrades.autoClicker05 || 0,
+        userUpgrades.autoClicker06 || 0,
+        userUpgrades.autoClicker07 || 0,
+        userUpgrades.autoClicker08 || 0,
+        userUpgrades.autoClicker09 || 0,
+        userUpgrades.autoClicker10 || 0,
+        userUpgrades.refClicker01 || 0,
+        userUpgrades.refClicker02 || 0,
+        userUpgrades.refClicker03 || 0,
+        userUpgrades.refClicker04 || 0,
+        userUpgrades.refClicker05 || 0,
+        userUpgrades.refClicker06 || 0,
+        userUpgrades.refClicker07 || 0,
+        userUpgrades.refClicker08 || 0,
+        userUpgrades.refClicker09 || 0,
+        userUpgrades.refClicker10 || 0,
+        userUpgrades.refClicker11 || 0,
+        userUpgrades.refClicker12 || 0,
+      ];
+
+      const totalValue = upgradeLevels.reduce((acc, level) => acc + (level > 4 ? 1 : 0), 0);
+      return userUpgrades.clickUpgrade > 18 && totalValue > 17;
+    });
+
+    setAirdrop(passingUsers.length); // Example: 10 tokens per passing user
+  };
+
   const totalUsers = userData ? Object.keys(userData).length : 0;
 
   // Calculate total profit per hour and incorporate tokens
@@ -130,11 +167,6 @@ const Dashboard = () => {
       )
     : 0;
 
-  // Function to calculate total value based on upgrade levels
-  const calculateTotalValue = (levels) => {
-    return levels.reduce((acc, level) => acc + (level > 4 ? 1 : 0), 0);
-  };
-
   // Sort user data by profit per hour in descending order
   const sortedUserData = userData
     ? Object.keys(userData).sort((a, b) => {
@@ -146,12 +178,13 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-layout">
-      <h1>User Data</h1>
+      <h1>Dashboard</h1>
       {userData ? (
         <>
           <div className="summary">
             <p className="total-users">Total Users: {totalUsers}</p>
             <p className="total-tokens">Total Tokens: {totalTokens}</p> {/* Display total tokens */}
+            <p className="airdrop">Valid: {airdrop}</p> {/* Display airdrop value */}
           </div>
           <div className="table-container">
             <table>
@@ -161,6 +194,8 @@ const Dashboard = () => {
                   <th>UserID</th>
                   <th>Profit per Hour</th>
                   <th>Invite Count</th>
+                  <th>Token</th> {/* Add a new column for token value */}
+                  <th>Condition</th> {/* Add a new column for condition */}
                 </tr>
               </thead>
               <tbody>
@@ -191,7 +226,7 @@ const Dashboard = () => {
                     userUpgrades.refClicker12 || 0,
                   ];
 
-                  const totalValue = calculateTotalValue(upgradeLevels);
+                  const totalValue = upgradeLevels.reduce((acc, level) => acc + (level > 4 ? 1 : 0), 0);
                   const isConditionMet = userUpgrades.clickUpgrade > 18 && totalValue > 17;
 
                   return (
@@ -199,16 +234,12 @@ const Dashboard = () => {
                       <tr>
                         <td data-label="#">{index + 1}</td>
                         <td data-label="UserID">{userId}</td>
-                        <td data-label="Profit per Hour">{Math.floor((userData[userId].autoIncrement || 0) * 3600 + (userData[userId]?.exchanges?.tokens || 0))}</td>
+                        <td data-label="Profit per Hour">
+                          {Math.floor((userData[userId].autoIncrement || 0) * 3600 + (userData[userId]?.exchanges?.tokens || 0))}
+                        </td>
                         <td data-label="Invite Count">{userData[userId].inviteCount || 0}</td>
-                      </tr>
-                      <tr>
-                        <td colSpan="3" className="additional-info">
-                        token: {userData[userId]?.exchanges?.tokens || 0}
-                        </td>
-                        <td colSpan="2" className="additional-info">
-                          Condition: {isConditionMet ? 'True' : 'False'}
-                        </td>
+                        <td data-label="Token Value">{userData[userId]?.exchanges?.tokens || 0}</td> {/* Display token value */}
+                        <td data-label="Condition">{isConditionMet ? 'Pass' : 'Not Pass'}</td> {/* Display 'Pass' or 'Not Pass' */}
                       </tr>
                     </React.Fragment>
                   );
@@ -225,4 +256,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 

@@ -47,6 +47,25 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Airdrop Value Container */
+.airdrop {
+  font-size: 18px; /* Slightly larger font size for emphasis */
+  color: white; /* White text color */
+  background-color: #4CAF50; /* Vibrant orange background */
+  font-weight: bold; /* Bold text */
+  text-align: center; /* Center the text */
+  padding: 12px; /* Padding for better spacing */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16); /* Subtle shadow for depth */
+  margin-bottom: 20px; /* Space below the element */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.airdrop:hover {
+  background-color: #E64A19; /* Darker orange on hover */
+}
+
+
 /* Total Users Styling */
 .total-users {
   background-color: #4CAF50; /* Green background */
