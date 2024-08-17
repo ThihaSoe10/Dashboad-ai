@@ -36,22 +36,27 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* Total Users and Total Profit Containers */
-.total-users, .total-profit {
+/* Total Users and Total Tokens Containers */
+.total-users, .total-tokens {
   font-size: 16px;
   color: white;
   margin-bottom: 20px;
   text-align: center;
-  background-color: #4CAF50; /* Green background */
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Profit Value Styling */
-.total-profit .profit-value {
-  font-size: 1.2rem; /* Same font size as total users */
-  color: white; /* Ensure consistent text color */
+/* Total Users Styling */
+.total-users {
+  background-color: #4CAF50; /* Green background */
+}
+
+/* Total Tokens Styling */
+.total-tokens {
+  background-color: #4CAF50; /* Orange background */
+  font-weight: bold; /* Bold text */
+  /* border: 2px solid #e67e22; Slightly darker orange border */
 }
 
 /* Table Container */
